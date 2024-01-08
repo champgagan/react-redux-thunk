@@ -19,7 +19,7 @@ class App extends Component {
       <Fragment>
         <h1>Click to get users</h1>
         <button onClick={this.clickHandler}>Fetch users</button>
-        {this.props?.users?.map((user) => {
+        {this.props.users.map((user) => {
           return <li key={user.id}>{user.username}</li>;
         })}
       </Fragment>
