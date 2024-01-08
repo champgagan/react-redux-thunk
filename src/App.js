@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import { Component, Fragment } from "react";
+import { connect } from "react-redux";
+import { fetchUsers } from "./action";
+
+class App extends Component {
+  constructor(props, state) {
+    super(props, state);
+  }
+
+  clickHandler = (event) => {
+    // action methods on mapDispatchToProps..
+    this.props.getUsers();
+  };
+
+  render() {
+    return (
+      <Fragment>
+        <h1>Click to get users</h1>
+        <button onClick={this.clickHandler}>Fetch users</button>
+        {this.props.users.map((user) => {
+          return <li key={user.id}>{user.username}</li>;
+        })}
+      </Fragment>
+    );
+  }
 }
 
-export default App;
+function mapStateToProps(state) {
+  const { userlist } = state;
+  return { users: userlist };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    // this dispatches an action to the redux store...
+    getUsers: () => dispatch(fetchUsers()),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
